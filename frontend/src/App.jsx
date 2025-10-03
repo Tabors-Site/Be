@@ -1,26 +1,25 @@
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import "./App.css";
+import RootSelection from "./components/RootSelection.jsx";
+import RootView from "./components/RootView.jsx";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [selectedRoot, setSelectedRoot] = useState(Cookies.get("rootSelected") || null);
 
   const apiUrl = import.meta.env.VITE_TREE_API_URL;
   const rootURL = import.meta.env.VITE_ROOT_URL;
 
+  // Check login
   useEffect(() => {
-
     const token = Cookies.get("token");
-
     if (!token) {
-
-      // No token -> redirect to root domain (login page)
       if (rootURL) window.location.href = rootURL;
       return;
     }
 
-    // Verify token with backend
     fetch(`${apiUrl}/verify-token`, {
       method: "POST",
       headers: {
@@ -42,7 +41,6 @@ function App() {
         setUsername(data.username);
       })
       .catch(() => {
-
         if (rootURL) window.location.href = rootURL;
       });
   }, []);
@@ -52,23 +50,40 @@ function App() {
     Cookies.remove("userId");
     Cookies.remove("loggedIn");
     Cookies.remove("token");
+    Cookies.remove("rootSelected");
     setIsLoggedIn(false);
-
+    setSelectedRoot(null);
     if (rootURL) window.location.href = rootURL;
   };
 
-  /*if (!isLoggedIn) {
-    if (rootURL) window.location.href = rootURL;
-  }*/
+  const handleRootSelect = (rootId) => {
+    Cookies.set("rootSelected", rootId, { expires: 7 });
+    setSelectedRoot(rootId);
+  };
+
+  if (!isLoggedIn) {
+    return <p>Checking login...</p>;
+  }
 
   return (
     <div className="app-container">
-      <header>
-        <h1>Welcome, {username} 🎉</h1>
-        <button onClick={handleLogout}>Logout</button>
+      <header className="app-header">
+        <button className="logout-button" onClick={handleLogout}>
+          Back to home
+        </button>
       </header>
       <main>
-        <p>This is start of Be!</p>
+        {!selectedRoot ? (
+          <RootSelection onSelectRoot={handleRootSelect} />
+        ) : (
+          <RootView
+            rootId={selectedRoot}
+            onBack={() => {
+              Cookies.remove("rootSelected");
+              setSelectedRoot(null);
+            }}
+          />
+        )}
       </main>
     </div>
   );

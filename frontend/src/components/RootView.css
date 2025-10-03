@@ -1,0 +1,59 @@
+.root-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.chat-input-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  border-top: 1px solid #ddd;
+  padding: 12px;
+  background: #fff;
+  margin-bottom: 100px;
+}
+
+.chat-textarea {
+  flex: 1;
+  resize: none;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  outline: none;
+  max-height: 200px;
+}
+
+.upload-button {
+  background: #fff;
+  color: #2684ff;
+  border: 1px solid #ccc;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.upload-button:hover {
+  background: #f5f5f5;
+  transform: scale(1.05);
+}
+
+.upload-button .icon {
+  width: 20px;
+  height: 20px;
+}
