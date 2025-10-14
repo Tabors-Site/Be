@@ -21,7 +21,7 @@ function RootView({ rootId, onBack }) {
         setLoading(true);
 
         try {
-            const res = await fetch("https://tree.tabors.site/api/AiResponse", {
+            const res = await fetch("https://tree.tabors.site/api/getMCPResponse", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ rootId, message: userMessage }),
