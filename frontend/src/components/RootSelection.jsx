@@ -95,7 +95,7 @@ function RootSelection({ onSelectRoot }) {
             <ul>
                 {roots.map((root) => (
                     <li key={root._id}>
-                        <button onClick={() => onSelectRoot(root._id)}>
+                        <button onClick={() => onSelectRoot(root)}>
                             {root.name || `Root ${root._id}`}
                         </button>
                     </li>
@@ -121,13 +121,13 @@ function RootSelection({ onSelectRoot }) {
                         +
                     </button>
                 ) : (
-                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}>
                         <input
                             type="text"
                             value={newRootName}
                             onChange={(e) => setNewRootName(e.target.value)}
                             placeholder="Enter root name"
-                            style={{ padding: "0.3rem", flex: 1 }}
+                            style={{ padding: "0.3rem", flex: 1, maxWidth: "400px" }}
                         />
                         <button
                             onClick={handleAddRoot}
@@ -162,7 +162,7 @@ function RootSelection({ onSelectRoot }) {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
 

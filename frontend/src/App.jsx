@@ -7,7 +7,16 @@ import RootView from "./components/RootView.jsx";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
-  const [selectedRoot, setSelectedRoot] = useState(Cookies.get("rootSelected") || null);
+  const [userId, setUserid] = useState("");
+
+  const [selectedRoot, setSelectedRoot] = useState(() => {
+    try {
+      const cookieValue = Cookies.get("rootSelected");
+      return cookieValue ? JSON.parse(cookieValue) : null;
+    } catch {
+      return null;
+    }
+  });
 
   const apiUrl = import.meta.env.VITE_TREE_API_URL;
   const rootURL = import.meta.env.VITE_ROOT_URL;
@@ -39,6 +48,7 @@ function App() {
 
         setIsLoggedIn(true);
         setUsername(data.username);
+        setUserid(data.userId)
       })
       .catch(() => {
         if (rootURL) window.location.href = rootURL;
@@ -56,9 +66,9 @@ function App() {
     if (rootURL) window.location.href = rootURL;
   };
 
-  const handleRootSelect = (rootId) => {
-    Cookies.set("rootSelected", rootId, { expires: 7 });
-    setSelectedRoot(rootId);
+  const handleRootSelect = (rootSelected) => {
+    Cookies.set("rootSelected", JSON.stringify(rootSelected), { expires: 7 });
+    setSelectedRoot(rootSelected);
   };
 
   if (!isLoggedIn) {
@@ -77,7 +87,9 @@ function App() {
           <RootSelection onSelectRoot={handleRootSelect} />
         ) : (
           <RootView
-            rootId={selectedRoot}
+            root={selectedRoot}
+            username={username}
+            userId={userId}
             onBack={() => {
               Cookies.remove("rootSelected");
               setSelectedRoot(null);
