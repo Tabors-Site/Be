@@ -7,12 +7,17 @@ function RootView({ root, username, userId, onBack }) {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
-    const chatEndRef = useRef(null);
 
-    // Auto-scroll to bottom when new messages arrive
+    const chatEndRef = useRef(null);
+    const inputRef = useRef(null);
+
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
+
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
 
     const handleSend = async () => {
         if (!message.trim()) return;
@@ -28,7 +33,12 @@ function RootView({ root, username, userId, onBack }) {
             const res = await fetch("https://tree.tabors.site/api/getMCPResponse", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ rootId: root._id, message: userMessage, username, userId }),
+                body: JSON.stringify({
+                    rootId: root._id,
+                    message: userMessage,
+                    username,
+                    userId,
+                }),
             });
 
             const data = await res.json();
@@ -56,7 +66,11 @@ function RootView({ root, username, userId, onBack }) {
 
             <div className="chat-area">
                 {messages.map((m, i) => (
-                    <div key={i} className={`msg ${m.role}`} style={{ width: m.role === "ai" ? "100%" : "auto" }}>
+                    <div
+                        key={i}
+                        className={`msg ${m.role}`}
+                        style={{ width: m.role === "ai" ? "100%" : "auto" }}
+                    >
                         {m.role === "ai" ? (
                             <ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body">
                                 {m.text}
@@ -72,6 +86,7 @@ function RootView({ root, username, userId, onBack }) {
 
             <div className="chat-input-bar">
                 <textarea
+                    ref={inputRef}
                     className="chat-textarea"
                     rows={1}
                     placeholder="Ask anything"
@@ -80,6 +95,13 @@ function RootView({ root, username, userId, onBack }) {
                     onInput={(e) => {
                         e.target.style.height = "auto";
                         e.target.style.height = e.target.scrollHeight + "px";
+                    }}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            handleSend();
+                        }
+                        // Shift+Enter = newline
                     }}
                 />
                 <button className="upload-button" onClick={handleSend}>
