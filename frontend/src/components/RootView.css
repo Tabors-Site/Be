@@ -1,16 +1,16 @@
-/* Base layout */
+/* === Base Layout === */
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: #111; /* unified dark background */
+  background: #111;
   color: #eee;
   font-family: system-ui, sans-serif;
-  overflow-y: auto; /* only one scroll */
+  overflow-y: auto;
 }
 
-/* Root container fills page vertically */
+/* === Containers === */
 .root-container {
   display: flex;
   flex-direction: column;
@@ -20,7 +20,6 @@ body {
   color: inherit;
 }
 
-/* Header and footer align width */
 .header,
 .chat-input-bar {
   width: 100%;
@@ -29,7 +28,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Chat area grows naturally with page scroll */
 .chat-area {
   display: flex;
   flex-direction: column;
@@ -39,14 +37,15 @@ body {
   margin: 1rem auto;
   padding-bottom: 60px;
   box-sizing: border-box;
+  align-items: stretch; /* prevents centering text */
 }
 
-/* Message bubbles */
+/* === Message Bubbles === */
 .msg {
   border-radius: 0.8rem;
   padding: 0.8rem 1rem;
-  box-sizing: border-box;
   line-height: 1.6;
+  box-sizing: border-box;
 }
 
 .msg.user {
@@ -60,36 +59,32 @@ body {
   align-self: flex-start;
   background: #222;
   color: #eee;
-  max-width: 100%;
-  width: 100%; /* allow markdown to stretch */
+  width: 100%;
+  display: block;
+  text-align: left;
 }
 
 .msg pre {
   margin: 0;
-  white-space: pre-wrap; /* allows wrapping while preserving newlines */
-  word-break: break-word; /* breaks long words if needed */
-  overflow-wrap: anywhere; /* modern handling of long tokens */
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow-x: auto; /* still allows scroll for wide code blocks */
-}
-.msg.user pre {
   white-space: pre-wrap;
   word-break: break-word;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+  overflow-x: auto;
 }
+
+/* === Chat Input === */
 .chat-input-bar {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
   right: 0;
+  margin: 0 auto;
   display: flex;
   align-items: flex-end;
-  border-top: 1px solid #333;
   gap: 0.5rem;
-  background: #111; /* same as page background */
+  border-top: 1px solid #333;
+  background: #111;
   padding: 0.75rem 1rem;
   box-sizing: border-box;
   z-index: 10;
@@ -108,7 +103,7 @@ body {
   line-height: 1.4;
 }
 
-/* Upload button */
+/* === Upload Button === */
 .upload-button {
   background: #fff;
   color: #2684ff;
@@ -132,13 +127,15 @@ body {
   height: 20px;
 }
 
-/* Markdown content */
+/* === Markdown Content === */
 .markdown-body {
   font-family: inherit;
   line-height: 1.6;
-  overflow-x: auto;
+  text-align: left !important;
   white-space: normal;
   word-break: break-word;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .markdown-body table {
@@ -185,7 +182,26 @@ body {
   text-decoration: underline;
 }
 
-/* Responsive */
+/* === Markdown Lists === */
+.markdown-body ul {
+  list-style-type: none;
+  margin: 0.25rem 0;
+  padding-left: 1rem;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+  margin: 0.25rem 0;
+  padding-left: 1.5rem;
+}
+
+.markdown-body li {
+  margin: 0.25rem 0;
+  padding-left: 0.25rem;
+  line-height: 1.5;
+}
+
+/* === Responsive === */
 @media (max-width: 768px) {
   .chat-area,
   .header,
