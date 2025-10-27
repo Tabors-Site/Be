@@ -55,7 +55,7 @@ function TreeView({ root, username }) {
                 maxWidth: "600px",
             }}
         >
-            <h3>Tree View</h3>
+            <h3>Tree Builder View</h3>
             <hr
                 style={{
                     border: "none",

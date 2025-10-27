@@ -33,7 +33,7 @@ function ToolCallView({ root, username }) {
                 boxSizing: "border-box",
             }}
         >
-            <h3>Functions called</h3>
+            <h3>Tree Builder Actions</h3>
             <hr
                 style={{
                     border: "none",
