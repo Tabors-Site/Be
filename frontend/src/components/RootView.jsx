@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "./RootView.css";
+import ToolCallView from "./ToolCallView";
+import TreeView from "./TreeView";
 
 function RootView({ root, username, userId, onBack }) {
     const [message, setMessage] = useState("");
@@ -42,7 +44,8 @@ function RootView({ root, username, userId, onBack }) {
             });
 
             const data = await res.json();
-            const aiText = data.output || data.answer || JSON.stringify(data, null, 2);
+            const aiText =
+                data.output || data.answer || JSON.stringify(data, null, 2);
 
             setMessages((prev) => [...prev, { role: "ai", text: aiText }]);
         } catch (err) {
@@ -63,6 +66,8 @@ function RootView({ root, username, userId, onBack }) {
                 <p>Currently selected root: {root.name}</p>
                 <button onClick={onBack}>⬅ Back to Roots</button>
             </div>
+            <ToolCallView root={root} username={username} />
+            <TreeView root={root} username={username} />
 
             <div className="chat-area">
                 {messages.map((m, i) => (
@@ -72,7 +77,10 @@ function RootView({ root, username, userId, onBack }) {
                         style={{ width: m.role === "ai" ? "100%" : "auto" }}
                     >
                         {m.role === "ai" ? (
-                            <ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-body">
+                            <ReactMarkdown
+                                remarkPlugins={[remarkGfm]}
+                                className="markdown-body"
+                            >
                                 {m.text}
                             </ReactMarkdown>
                         ) : (
