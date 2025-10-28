@@ -6,7 +6,7 @@ function ToolCallView({ root, username }) {
     const socket = useSocket(root, username);
 
     useEffect(() => {
-        if (!root?._id || !username) return;
+        if (!socket) return;
 
         const handleToolCall = (data) => {
             console.log("🧰 Received toolCall:", data);
@@ -15,7 +15,7 @@ function ToolCallView({ root, username }) {
 
         socket.on("toolCall", handleToolCall);
         return () => socket.off("toolCall", handleToolCall);
-    }, [socket, root?._id, username]);
+    }, [socket]);
 
     return (
         <div

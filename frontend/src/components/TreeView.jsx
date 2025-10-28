@@ -7,7 +7,7 @@ function TreeView({ root, username }) {
     const socket = useSocket(root, username);
 
     useEffect(() => {
-        if (!root?._id || !username) return;
+        if (!socket) return;
 
         const handleTree = (data) => {
             console.log("🌲 Received tree resource:", data);
@@ -36,7 +36,7 @@ function TreeView({ root, username }) {
             socket.off("treeResource", handleTree);
             socket.off("nodeResource", handleNode);
         };
-    }, [socket, root?._id, username]);
+    }, [socket]);
 
     return (
         <div
